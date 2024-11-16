@@ -18,17 +18,19 @@ const App = () => {
   }, []);
 
   return (
-    <div style={{ color: 'red' }}>
+    <div className=' flex flex-col gap-3'>
       {comments.map((comment) => (
-        <div key={comment._id} className="">
+        <div key={comment._id} className="bg-white" >
           <div className="">
+            <div>{comment.score}</div>
             <span className="">{comment.user.username}</span>
+            <p className="">{comment.content}</p>
+            <div> reply</div>
           </div>
-          <p className="">{comment.content}</p>
 
           {/* Replies */}
           {comment.replies?.length > 0 && (
-            <div className="">
+            <div className="bg-white">
               {comment.replies.map((reply) => (
                 <div key={reply.id} className="">
                   <div className="">

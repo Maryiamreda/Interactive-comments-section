@@ -17,6 +17,7 @@ export interface Reply {
 export interface Comment {
     _id: string;
     content: string;
+    score: string;
     createdAt: string;
     user: User;
     replies: Reply[];
