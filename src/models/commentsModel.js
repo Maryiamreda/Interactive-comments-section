@@ -32,8 +32,10 @@ const commentsSchema = mongoose.Schema(
     },
     {
         timestamps: true,
+        // This ensures the collection name exactly matches what's in MongoDB
+        collection: 'comments'  // This is important - it matches the green collection name in your UI
     }
 );
 
 const Comments = mongoose.model('Comments', commentsSchema);
-export default Comments;  // Changed to ES Module export
+export default Comments;
