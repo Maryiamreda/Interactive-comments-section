@@ -1,8 +1,10 @@
+// types/commentTypes.ts
+
 export interface User {
     username: string;
     image: {
-        png: string;
         webp: string;
+        png: string;
     };
 }
 
@@ -15,11 +17,9 @@ export interface Reply {
 }
 
 export interface Comment {
-    isReplying: any;
     _id: string;
     content: string;
-    score: string;
     createdAt: string;
     user: User;
-    replies: Reply[];
+    replies?: Reply[];
 }
