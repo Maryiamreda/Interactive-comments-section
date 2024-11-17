@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface Reply {
-    id: number;
+    id: string;
     content: string;
     createdAt: string;
     replyingTo: string;

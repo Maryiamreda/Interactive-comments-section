@@ -13,14 +13,14 @@ export const handleReplySubmit = async (
         return;
     }
 
-    const comment = comments.find((c) => c._id === commentId);
+    const comment = comments.find((c) => c._id === commentId); //how to search also in replys 
     if (!comment) {
         alert('Comment not found.');
         return;
     }
 
     const replyData: Reply = {
-        id: Date.now(),
+        id: Date.now().toString(),
         content: replyContent.replace(`@${comment.user.username} `, ''), // Removes username mention
         replyingTo: comment.user.username,
         createdAt: new Date().toISOString(),

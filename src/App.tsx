@@ -21,6 +21,8 @@ const Comments = () => {
           <RenderComment
             comment={comment}
             replyingTo={replyingTo}
+            parentId={comment._id}
+            ogId={comment._id}
             replyContent={replyContent}
             comments={comments}
             setReplyingTo={setReplyingTo}
@@ -31,7 +33,8 @@ const Comments = () => {
             <div className="ml-8 border-l-2 border-gray-200 pl-4">
               {comment.replies.map((reply) => (
                 <RenderComment
-                  key={reply.id}
+                  // key={reply.id}
+                  ogId={reply.id}
                   comment={reply}
                   parentId={comment._id}
                   replyingTo={replyingTo}

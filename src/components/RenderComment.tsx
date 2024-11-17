@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from '../commentActions';
 
 interface RenderCommentProps {
     comment: Comment | Reply;
-    parentId?: string;
+    parentId: string;
+    ogId: string;
+
     replyingTo: string | null;
     replyContent: string;
     comments: Comment[];
@@ -16,6 +18,7 @@ interface RenderCommentProps {
 const RenderComment: React.FC<RenderCommentProps> = ({
     comment,
     parentId,
+    ogId,
     replyingTo,
     replyContent,
     comments,
@@ -23,11 +26,13 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setReplyContent,
     setComments,
 }) => {
-    const id = '_id' in comment ? comment._id : parentId!;
-    const isReplying = replyingTo === id;
-
+    const id = parentId!;
+    const isReplying = replyingTo === ogId;
+    useEffect(() => {
+        console.log(id)
+    }, [])
     return (
-        <div key={id} className="mb-4">
+        <div key={ogId} className="mb-4">
             <div className="flex items-start">
                 <div className="ml-2">
                     <div className="font-semibold">{comment.user.username}</div>
@@ -43,8 +48,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         setReplyingTo(null);
                         setReplyContent('');
                     } else {
-                        setReplyingTo(id);
-                        setReplyContent(`@${comment.user.username} `);
+                        setReplyingTo(id); // where did we get the id 
+                        // setReplyContent(`@${comment.user.username} `);
                     }
                 }}
                 className="text-blue-500 hover:text-blue-600"
