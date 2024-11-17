@@ -15,6 +15,7 @@ export interface Reply {
 }
 
 export interface Comment {
+    isReplying: any;
     _id: string;
     content: string;
     score: string;

@@ -45,12 +45,30 @@ app.get('/', async (req, res) => {
 });
 
 // POST new comment
-app.post('/', async (req, res) => {
+
+app.post('/comments', async (req, res) => {
     try {
         const comment = await Comments.create(req.body);
-        res.status(200).json(comment);
+        res.status(201).json(comment);
     } catch (error) {
-        console.log('Error creating comment:', error.message);
+        console.error('Error creating comment:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.post('/comments/:commentId/reply', async (req, res) => {
+    try {
+        const comment = await Comments.findById(req.params.commentId);
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+
+        comment.replies.push(req.body);
+        await comment.save();
+
+        res.status(201).json(comment);
+    } catch (error) {
+        console.error('Error adding reply:', error);
         res.status(500).json({ message: error.message });
     }
 });
