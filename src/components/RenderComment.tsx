@@ -26,11 +26,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setReplyContent,
     setComments,
 }) => {
-    const id = parentId!;
-    const isReplying = replyingTo === ogId;
-    useEffect(() => {
-        console.log(id)
-    }, [])
+    const isReplying = replyingTo === ogId; // Match with ogId to ensure textarea placement under the correct comment
+
     return (
         <div key={ogId} className="mb-4">
             <div className="flex items-start">
@@ -48,13 +45,13 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         setReplyingTo(null);
                         setReplyContent('');
                     } else {
-                        setReplyingTo(id); // where did we get the id 
-                        // setReplyContent(`@${comment.user.username} `);
+                        setReplyingTo(ogId); // Use ogId to set the replying state
+                        setReplyContent(`@${comment.user.username} `);
                     }
                 }}
                 className="text-blue-500 hover:text-blue-600"
             >
-                reply
+                Reply
             </button>
 
             {isReplying && (
@@ -68,7 +65,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     <button
                         onClick={() =>
                             handleReplySubmit(
-                                id,
+                                parentId,
                                 replyContent,
                                 comments,
                                 setComments,
@@ -85,5 +82,6 @@ const RenderComment: React.FC<RenderCommentProps> = ({
         </div>
     );
 };
+
 
 export default RenderComment;
