@@ -1,4 +1,4 @@
-import { Reply, Comment } from './types/commentTypes';
+import { Reply, Comment } from '../types/commentTypes';
 
 export const handleReplySubmit = async (
     commentId: string,
@@ -20,7 +20,7 @@ export const handleReplySubmit = async (
     }
 
     const replyData: Reply = {
-        id: Date.now().toString(),
+        id: Date.now().toString(), // Make sure to use 'id' only for replies, as it's part of the schema.
         content: replyContent.replace(`@${comment.user.username} `, ''), // Removes username mention
         replyingTo: comment.user.username,
         createdAt: new Date().toISOString(),

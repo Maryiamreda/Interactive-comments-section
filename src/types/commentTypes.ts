@@ -17,7 +17,8 @@ export interface Reply {
 }
 
 export interface Comment {
-    _id: string;
+    _id: string;    // Keep _id for MongoDB documents
+    id: number;     // Add id field to match schema
     content: string;
     createdAt: string;
     user: User;

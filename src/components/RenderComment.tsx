@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Comment, Reply } from '../types/commentTypes';
-import { handleReplySubmit } from '../commentActions';
+import { handleReplySubmit } from './commentActions';
 
 interface RenderCommentProps {
     comment: Comment | Reply;
@@ -39,6 +39,12 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                 </div>
             </div>
             <p className="mt-2">{comment.content}</p>
+            {comment.user.username === 'juliusomo' && (
+                <div className='text-black'>
+                    <div>Delete</div>
+                    <div>Edit</div>
+
+                </div>)}
             <button
                 onClick={() => {
                     if (isReplying) {
@@ -79,6 +85,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     </button>
                 </div>
             )}
+
+
         </div>
     );
 };

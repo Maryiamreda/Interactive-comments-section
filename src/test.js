@@ -49,6 +49,8 @@ app.get('/', async (req, res) => {
 app.post('/comments', async (req, res) => {
     try {
         const comment = await Comments.create(req.body);
+        console.log('Incoming Data:', req.body); // Log the data received
+
         res.status(201).json(comment);
     } catch (error) {
         console.error('Error creating comment:', error);
