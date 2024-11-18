@@ -90,7 +90,7 @@ app.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE comment
+//DELETE comment
 app.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -103,5 +103,7 @@ app.delete('/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+
 
 export default app;

@@ -8,6 +8,8 @@ const Comments = () => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState<string>('');
   const [commentContent, setCommentContent] = useState<string>(''); // Corrected type
+
+
   useEffect(() => {
     fetch('http://localhost:3000/')
       .then((res) => res.json())

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from './commentActions';
+import styles from './RenderComment.module.css';
+import { handleDelete } from './deleteAndEdit';
 
 interface RenderCommentProps {
     comment: Comment | Reply;
     parentId: string;
     ogId: string;
-
     replyingTo: string | null;
     replyContent: string;
     comments: Comment[];
@@ -27,6 +28,21 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setComments,
 }) => {
     const isReplying = replyingTo === ogId; // Match with ogId to ensure textarea placement under the correct comment
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Open modal and set the current comment ID
+    const openModal = () =>
+        setIsOpen(true);
+
+
+    // Close modal
+    const closeModal = () =>
+        setIsOpen(false);
+
+    // Type guard to check if the comment is a Comment
+    const isComment = (comment: Comment | Reply): comment is Comment => {
+        return '_id' in comment;
+    };
 
     return (
         <div key={ogId} className="mb-4">
@@ -40,11 +56,20 @@ const RenderComment: React.FC<RenderCommentProps> = ({
             </div>
             <p className="mt-2">{comment.content}</p>
             {comment.user.username === 'juliusomo' && (
-                <div className='text-black'>
-                    <div>Delete</div>
-                    <div>Edit</div>
+                <div className="text-black">
 
-                </div>)}
+                    <div
+                        className=""
+                        onClick={() => openModal()
+
+                        } // Use `_id` if it's a `Comment`
+                    >
+                        Delete
+                    </div>
+
+                    <div>Edit</div>
+                </div>
+            )}
             <button
                 onClick={() => {
                     if (isReplying) {
@@ -86,10 +111,45 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                 </div>
             )}
 
-
+            {isOpen && (
+                <div
+                    className={styles.modal}
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            closeModal();
+                        }
+                    }}
+                >
+                    <div className={styles.modalContent}>
+                        <p>
+                            Are you sure you want to delete this comment? This will remove the
+                            comment and can't be undone.
+                        </p>
+                        <div className="flex justify-end gap-4 mt-4">
+                            <div
+                                className="cursor-pointer text-gray-500 hover:text-gray-700"
+                                onClick={closeModal}
+                            >
+                                NO, CANCEL
+                            </div>
+                            <div
+                                className="cursor-pointer text-red-500 hover:text-red-700"
+                                onClick={() => {
+                                    handleDelete(
+                                        ogId,
+                                        comments,
+                                        setComments); // Pass comments and setComments
+                                    closeModal();
+                                }}
+                            >
+                                YES, DELETE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
-
 
 export default RenderComment;
