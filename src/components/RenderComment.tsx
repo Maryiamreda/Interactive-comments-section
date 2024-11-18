@@ -138,7 +138,10 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                     handleDelete(
                                         ogId,
                                         comments,
-                                        setComments); // Pass comments and setComments
+                                        parentId,
+                                        setComments,
+
+                                    ); // Pass comments and setComments
                                     closeModal();
                                 }}
                             >

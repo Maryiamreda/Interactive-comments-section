@@ -90,19 +90,54 @@ app.put('/:id', async (req, res) => {
     }
 });
 
-//DELETE comment
+// //DELETE comment
+
+
+// Updated backend delete route
 app.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const comment = await Comments.findByIdAndDelete(id);
-        if (!comment) {
-            return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+        const { parentId } = req.query;
+
+        if (!parentId) {
+            // Delete main comment
+            const deletedComment = await Comments.findByIdAndDelete(id);
+            if (!deletedComment) {
+                return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+            }
+            return res.status(200).json({ message: 'Comment deleted successfully' });
         }
-        res.status(200).json(comment);
+
+        // Delete reply
+        const parentComment = await Comments.findById(parentId);
+        if (!parentComment) {
+            return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
+        }
+
+        // Filter out the reply - id is already a number
+        parentComment.replies = parentComment.replies.filter(
+            (reply) => reply.id !== parseInt(id)
+        );
+
+        await parentComment.save();
+        res.status(200).json({ message: 'Reply deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
+// app.delete('/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const comment = await Comments.findByIdAndDelete(id);
+//         if (!comment) {
+//             return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+//         }
+//         res.status(200).json(comment);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
 
 
 
