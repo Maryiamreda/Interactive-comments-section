@@ -99,8 +99,9 @@ app.delete('/:id', async (req, res) => {
         const { id } = req.params;
         const { parentId } = req.query;
 
-        if (!parentId) {
+        if (parentId === id) {
             // Delete main comment
+            console.log(id)
             const deletedComment = await Comments.findByIdAndDelete(id);
             if (!deletedComment) {
                 return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
