@@ -76,21 +76,113 @@ app.post('/comments/:commentId/reply', async (req, res) => {
 });
 
 // PUT (update) comment
+
+// app.put('/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const comment = await Comments.findByIdAndUpdate(id, req.body);
+//         if (!comment) {
+//             return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+//         }
+//         const updatedComment = await Comments.findById(id);
+//         res.status(200).json(updatedComment);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
+
+// app.put('/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { parentId } = req.query;
+
+//         if (parentId === id) {
+//             const comment = await Comments.findByIdAndUpdate(id, req.body);
+//             if (!comment) {
+//                 return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+//             }
+//             return res.status(200).json({ message: 'Comment updated successfully' });
+//         }
+
+//         // Delete reply 
+//         const parentComment = await Comments.findById(parentId);
+//         if (!parentComment) {
+//             return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
+//         }
+
+//         // Filter out the reply - id is already a number 
+//         parentComment.replies.forEach(
+//             (reply) => {
+//                 if (reply.id === parseInt(id)) {
+//                     findByIdAndUpdate(reply.id, req.body);
+//                     return
+//                 }
+//             }
+//         );
+
+//         await parentComment.save();
+//         res.status(200).json({ message: 'Reply updated successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
+
+
+
+
+
+
+
+
+
+
 app.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const comment = await Comments.findByIdAndUpdate(id, req.body);
-        if (!comment) {
-            return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+        const { parentId } = req.query;
+        const { content } = req.body;
+        console.log(content)
+        if (parentId === id) {
+            const comment = await Comments.findByIdAndUpdate(id, { content });
+            if (!comment) {
+                return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
+            }
+            return res.status(200).json({ message: 'Comment updated successfully' });
         }
-        const updatedComment = await Comments.findById(id);
-        res.status(200).json(updatedComment);
+
+        // Update reply 
+        const parentComment = await Comments.findById(parentId);
+        if (!parentComment) {
+            return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
+        }
+
+        // Update the reply - id is already a number 
+        parentComment.replies.forEach(
+            (reply) => {
+                if (reply.id === parseInt(id)) {
+                    reply.content = content;
+                    return;
+                }
+            }
+        );
+
+        await parentComment.save();
+        res.status(200).json({ message: 'Reply updated successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 
-// //DELETE comment
+
+
+
+
+
+
+
+
+
+
 
 
 // Updated backend delete route

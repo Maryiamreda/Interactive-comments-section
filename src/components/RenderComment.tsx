@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from './commentActions';
 import styles from './RenderComment.module.css';
-import { handleDelete } from './deleteAndEdit';
+import { handleDelete, handleEdit } from './deleteAndEdit';
 
 interface RenderCommentProps {
     comment: Comment | Reply;
@@ -29,7 +29,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
 }) => {
     const isReplying = replyingTo === ogId; // Match with ogId to ensure textarea placement under the correct comment
     const [isOpen, setIsOpen] = useState(false);
-
+    const [edit, setEdit] = useState(false);
+    const [editContent, setEditContent] = useState<string>("")
     // Open modal and set the current comment ID
     const openModal = () =>
         setIsOpen(true);
@@ -40,9 +41,9 @@ const RenderComment: React.FC<RenderCommentProps> = ({
         setIsOpen(false);
 
     // Type guard to check if the comment is a Comment
-    const isComment = (comment: Comment | Reply): comment is Comment => {
-        return '_id' in comment;
-    };
+    // const isComment = (comment: Comment | Reply): comment is Comment => {
+    //     return '_id' in comment;
+    // };
 
     return (
         <div key={ogId} className="mb-4">
@@ -54,7 +55,31 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     )}
                 </div>
             </div>
-            <p className="mt-2">{comment.content}</p>
+            {edit === true ? (<div >
+                <textarea
+                    value={comment.content}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    className="w-full p-2 border rounded"
+                    rows={3}
+                />
+
+                <button
+                    onClick={() => {
+                        handleEdit(
+                            ogId,
+                            comments,
+                            editContent,
+                            parentId,
+                            setComments,
+
+                        ); // Pass comments and setComments
+                        setEdit(false);
+                    }}
+
+                >Update</button>
+            </div>) :
+                (<p className="mt-2">{comment.content}</p>)}
+
             {comment.user.username === 'juliusomo' && (
                 <div className="text-black">
 
@@ -67,7 +92,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         Delete
                     </div>
 
-                    <div>Edit</div>
+                    <div onClick={() => setEdit(true)}>Edit</div>
                 </div>
             )}
             <button
