@@ -15,7 +15,7 @@ const Comments = () => {
       .then((res) => res.json())
       .then(setComments)
       .catch((err) => console.error('Error fetching comments:', err));
-  }, []);
+  }, [comments, setComments]);
 
   return (
     <div className="max-w-2xl mx-auto p-4">

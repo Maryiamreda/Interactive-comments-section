@@ -57,8 +57,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
             </div>
             {edit === true ? (<div >
                 <textarea
-                    value={comment.content}
-                    onChange={(e) => setEditContent(e.target.value)}
+                    value={editContent} // Controlled input bound to state
+                    onChange={(e) => setEditContent(e.target.value)} // Update state as user types
                     className="w-full p-2 border rounded"
                     rows={3}
                 />
@@ -92,7 +92,10 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         Delete
                     </div>
 
-                    <div onClick={() => setEdit(true)}>Edit</div>
+                    <div onClick={() => {
+                        setEdit(true);               // Enter edit mode
+                        setEditContent(comment.content); // Initialize editContent with the original content
+                    }}>Edit</div>
                 </div>
             )}
             <button
