@@ -14,6 +14,8 @@ export interface Reply {
     createdAt: string;
     replyingTo: string;
     user: User;
+    score: number; // Add score to Reply
+
 }
 
 export interface Comment {
@@ -22,5 +24,7 @@ export interface Comment {
     content: string;
     createdAt: string;
     user: User;
+    score: number; // Add score to Reply
+
     replies?: Reply[];
 }

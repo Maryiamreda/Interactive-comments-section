@@ -3,7 +3,6 @@ import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from './commentActions';
 import styles from './RenderComment.module.css';
 import { handleDelete, handleEdit } from './deleteAndEdit';
-
 interface RenderCommentProps {
     comment: Comment | Reply;
     parentId: string;
@@ -40,78 +39,102 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     const closeModal = () =>
         setIsOpen(false);
 
-    // Type guard to check if the comment is a Comment
-    // const isComment = (comment: Comment | Reply): comment is Comment => {
-    //     return '_id' in comment;
-    // };
-
+    //gap-72 
     return (
-        <div key={ogId} className="mb-4">
-            <div className="flex items-start">
-                <div className="ml-2">
-                    <div className="font-semibold">{comment.user.username}</div>
-                    {'replyingTo' in comment && (
-                        <span className="text-sm text-gray-500">@{comment.replyingTo}</span>
+        <div key={ogId} className="mb-4rounded">
+            <div className=' bg-white  flex gap-4'>
+                <div className='bg-light-gray '>
+                    <img src='./images/icon-plus.svg' />
+                    {'score' in comment && (
+                        <span className="text-sm ">{comment.score}</span>
                     )}
+                    <img src='./images/icon-minus.svg' />
+                </div>
+                <div>
+
+                    <div className="flex justify-between">
+
+
+                        <div className='inline-flex gap-5'>
+                            <div className=''>
+                                <img src={comment.user.image.png} width={40} className='h-9' />
+                            </div>
+                            <div className="font-semibold text-dark-blue ">{comment.user.username}</div>
+                            <p className='text-grayish-blue '> {comment.createdAt}</p>
+                        </div>
+                        <div className='inline-flex gap-1 relative '>
+                            <div className='py-4'>
+                                <img src="./images/icon-reply.svg" className="text-moderate-blue hover:text-light-grayish-blue h-3" />
+                            </div>
+                            <button
+                                onClick={() => {
+                                    if (isReplying) {
+                                        setReplyingTo(null);
+                                        setReplyContent('');
+                                    } else {
+                                        setReplyingTo(ogId); // Use ogId to set the replying state
+                                        setReplyContent(`@${comment.user.username} `);
+                                    }
+                                }}
+                                className="text-moderate-blue hover:text-light-grayish-blue"
+                            >
+                                Reply
+                            </button>
+                        </div>
+
+                    </div>
+                    {edit === true ? (<div >
+                        <textarea
+                            value={editContent} // Controlled input bound to state
+                            onChange={(e) => setEditContent(e.target.value)} // Update state as user types
+                            className="w-full p-2 border rounded"
+                            rows={3}
+                        />
+
+                        <button
+                            onClick={() => {
+                                handleEdit(
+                                    ogId,
+                                    comments,
+                                    editContent,
+                                    parentId,
+                                    setComments,
+
+                                ); // Pass comments and setComments
+                                setEdit(false);
+                            }}
+
+                        >Update</button>
+                    </div>) :
+                        (<p className="mt-2 text-grayish-blue">
+                            {'replyingTo' in comment && (
+                                <span className="text-sm text-gray-500">@{comment.replyingTo}</span>
+                            )} {comment.content}</p>)}
+
+
+                    {comment.user.username === 'juliusomo' && (
+                        <div className="text-black">
+
+                            <div
+                                className=""
+                                onClick={() => openModal()
+
+                                } // Use `_id` if it's a `Comment`
+                            >
+                                Delete
+                            </div>
+
+                            <div onClick={() => {
+                                setEdit(true);               // Enter edit mode
+                                setEditContent(comment.content); // Initialize editContent with the original content
+                            }}>Edit</div>
+                        </div>
+                    )}
+
                 </div>
             </div>
-            {edit === true ? (<div >
-                <textarea
-                    value={editContent} // Controlled input bound to state
-                    onChange={(e) => setEditContent(e.target.value)} // Update state as user types
-                    className="w-full p-2 border rounded"
-                    rows={3}
-                />
 
-                <button
-                    onClick={() => {
-                        handleEdit(
-                            ogId,
-                            comments,
-                            editContent,
-                            parentId,
-                            setComments,
 
-                        ); // Pass comments and setComments
-                        setEdit(false);
-                    }}
-
-                >Update</button>
-            </div>) :
-                (<p className="mt-2">{comment.content}</p>)}
-
-            {comment.user.username === 'juliusomo' && (
-                <div className="text-black">
-
-                    <div
-                        className=""
-                        onClick={() => openModal()
-
-                        } // Use `_id` if it's a `Comment`
-                    >
-                        Delete
-                    </div>
-
-                    <div onClick={() => {
-                        setEdit(true);               // Enter edit mode
-                        setEditContent(comment.content); // Initialize editContent with the original content
-                    }}>Edit</div>
-                </div>
-            )}
-            <button
-                onClick={() => {
-                    if (isReplying) {
-                        setReplyingTo(null);
-                        setReplyContent('');
-                    } else {
-                        setReplyingTo(ogId); // Use ogId to set the replying state
-                        setReplyContent(`@${comment.user.username} `);
-                    }
-                }}
-                className="text-blue-500 hover:text-blue-600"
-            >
-                Reply
-            </button>
 
             {isReplying && (
                 <div className="mt-2">
