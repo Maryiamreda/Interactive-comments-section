@@ -42,13 +42,13 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     //gap-72 
     return (
         <div key={ogId} className="mb-4rounded">
-            <div className=' bg-white  flex gap-4'>
-                <div className='bg-light-gray '>
-                    <img src='./images/icon-plus.svg' />
+            <div className=' bg-white p-3  flex  gap-4'>
+                <div className='bg-light-gray w-5 '>
+                    <img src='./images/icon-plus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-3" />
                     {'score' in comment && (
                         <span className="text-sm ">{comment.score}</span>
                     )}
-                    <img src='./images/icon-minus.svg' />
+                    <img src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
                 </div>
                 <div>
 
@@ -62,12 +62,43 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             <div className="font-semibold text-dark-blue ">{comment.user.username}</div>
                             <p className='text-grayish-blue '> {comment.createdAt}</p>
                         </div>
-                        <div className='inline-flex gap-1 relative '>
-                            <div className='py-4'>
-                                <img src="./images/icon-reply.svg" className="text-moderate-blue hover:text-light-grayish-blue h-3" />
-                            </div>
-                            <button
-                                onClick={() => {
+                        <div className=' relative '>
+                            {comment.user.username === 'juliusomo' ? (
+                                <div className=" inline-flex gap-4">
+
+                                    <div
+                                        className='inline-flex gap-1 '
+                                        onClick={() => openModal()
+
+                                        } // Use `_id` if it's a `Comment`
+                                    >
+                                        <div className='py-4'>
+                                            <img src="./images/icon-delete.svg" className=" hover:color-light-grayish-blue h-3" />
+                                        </div>
+                                        <button
+                                            className="text-soft-red hover:text-pale-red"
+
+                                        ><b>Delete</b></button>
+
+                                    </div>
+
+                                    <div className='inline-flex gap-1 ' onClick={() => {
+                                        setEdit(true);               // Enter edit mode
+                                        setEditContent(comment.content); // Initialize editContent with the original content
+                                    }}>
+
+                                        <div className='py-4'>
+                                            <img src="./images/icon-edit.svg" className=" hover:color-light-grayish-blue h-3" />
+                                        </div>
+                                        <button
+                                            className="text-moderate-blue hover:text-light-grayish-blue"
+
+                                        ><b>Edit</b></button>
+
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='inline-flex gap-1  ' onClick={() => {
                                     if (isReplying) {
                                         setReplyingTo(null);
                                         setReplyContent('');
@@ -75,11 +106,20 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                         setReplyingTo(ogId); // Use ogId to set the replying state
                                         setReplyContent(`@${comment.user.username} `);
                                     }
-                                }}
-                                className="text-moderate-blue hover:text-light-grayish-blue"
-                            >
-                                Reply
-                            </button>
+                                }}>
+                                    <div className='py-4'>
+                                        <img src="./images/icon-reply.svg" className=" hover:color-light-grayish-blue h-3" />
+                                    </div>
+                                    <button
+
+                                        className="text-moderate-blue hover:text-light-grayish-blue"
+                                    >
+                                        <b>Reply</b>
+                                    </button>
+                                </div>
+                            )}
+
+
                         </div>
 
                     </div>
@@ -112,24 +152,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             )} {comment.content}</p>)}
 
 
-                    {comment.user.username === 'juliusomo' && (
-                        <div className="text-black">
 
-                            <div
-                                className=""
-                                onClick={() => openModal()
-
-                                } // Use `_id` if it's a `Comment`
-                            >
-                                Delete
-                            </div>
-
-                            <div onClick={() => {
-                                setEdit(true);               // Enter edit mode
-                                setEditContent(comment.content); // Initialize editContent with the original content
-                            }}>Edit</div>
-                        </div>
-                    )}
 
                 </div>
             </div>
