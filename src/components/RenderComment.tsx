@@ -42,8 +42,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     //gap-72 
     return (
         <div key={ogId} className="mb-4rounded">
-            <div className=' bg-white p-5 flex  gap-4'>
-                <div className='bg-light-gray w-16 h-28 rounded-lg  flex flex-col gap-4 justify-center items-center'>
+            <div className=' bg-white p-5 flex rounded-lg  gap-4'>
+                <div className='bg-light-gray w-11 h-28 rounded-lg  flex flex-col gap-4 justify-center items-center'>
                     <div>
                         <img width={20} height={20}
                             src='./images/icon-plus.svg'
@@ -62,12 +62,10 @@ const RenderComment: React.FC<RenderCommentProps> = ({
 
                     </div>
                 </div>
-                <div>
+                <div className='w-[515px]'>
 
-                    <div className="flex justify-between">
-
-
-                        <div className='inline-flex gap-5'>
+                    <div className=" customW flex justify-between ">
+                        <div className='inline-flex gap-5 pt-2'>
                             <div className=''>
                                 <img src={comment.user.image.png} width={40} className='h-9 ' />
                             </div>
@@ -139,7 +137,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         <textarea
                             value={editContent} // Controlled input bound to state
                             onChange={(e) => setEditContent(e.target.value)} // Update state as user types
-                            className="w-full p-2 border rounded"
+                            className="w-full text-dark-blue px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
                             rows={3}
                         />
 
@@ -173,11 +171,13 @@ const RenderComment: React.FC<RenderCommentProps> = ({
 
 
             {isReplying && (
-                <div className="mt-2">
+                <div className="mt-2  bg-white p-5 flex  gap-4 justify-between">
+                    <img src='./images/avatars/image-juliusomo.png' width={40} className='h-9' />
+
                     <textarea
                         value={replyContent}
                         onChange={(e) => setReplyContent(e.target.value)}
-                        className="w-full p-2 border rounded"
+                        className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
                         rows={3}
                     />
                     <button
@@ -191,7 +191,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                 setReplyingTo
                             )
                         }
-                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        className="mt-2 px-4 py-2 h-[46px] w-[120px] bg-moderate-blue text-white rounded-lg hover:bg-light-grayish-blue"
                     >
                         Reply
                     </button>
@@ -208,19 +208,20 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     }}
                 >
                     <div className={styles.modalContent}>
-                        <p>
+                        <h1 className='text-dark-blue font-bold text-xl mb-6'>Delete Comment</h1>
+                        <p className=" text-grayish-blue  text-sm ">
                             Are you sure you want to delete this comment? This will remove the
                             comment and can't be undone.
                         </p>
-                        <div className="flex justify-end gap-4 mt-4">
+                        <div className="flex justify-center gap-4 mt-4 " >
                             <div
-                                className="cursor-pointer text-gray-500 hover:text-gray-700"
+                                className=" rounded-lg cursor-pointer mt-2 px-4 py-2 bg-dark-blue hover:bg-grayish-blue"
                                 onClick={closeModal}
                             >
-                                NO, CANCEL
+                                <b> NO, CANCEL</b>
                             </div>
                             <div
-                                className="cursor-pointer text-red-500 hover:text-red-700"
+                                className=" rounded-lg cursor-pointer mt-2 px-4 py-2 bg-soft-red hover:bg-pale-red"
                                 onClick={() => {
                                     handleDelete(
                                         ogId,
@@ -232,7 +233,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                     closeModal();
                                 }}
                             >
-                                YES, DELETE
+                                <b>YES, DELETE</b>
                             </div>
                         </div>
                     </div>

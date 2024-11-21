@@ -16,11 +16,19 @@
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 350px;
+    height: 213px;
     max-width: 600px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.customW {
+    width: 515px;
 }
 
 .close {
