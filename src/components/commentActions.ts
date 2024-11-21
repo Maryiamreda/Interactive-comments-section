@@ -3,6 +3,7 @@ import { Reply, Comment } from '../types/commentTypes';
 export const handleReplySubmit = async (
     commentId: string,
     replyContent: string,
+    replyto: string,
     comments: Comment[],
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
     setReplyContent: React.Dispatch<React.SetStateAction<string>>,
@@ -22,7 +23,7 @@ export const handleReplySubmit = async (
     const replyData: Reply = {
         id: Date.now().toString(), // Make sure to use 'id' only for replies, as it's part of the schema.
         content: replyContent.replace(`@${comment.user.username} `, ''), // Removes username mention
-        replyingTo: comment.user.username,
+        replyingTo: replyto,
         createdAt: new Date().toISOString(),
         user: {
             username: 'juliusomo',

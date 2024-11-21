@@ -32,6 +32,9 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     const [isOpen, setIsOpen] = useState(false);
     const [edit, setEdit] = useState(false);
     const [editContent, setEditContent] = useState<string>("")
+    const [replyto, setReplyTo] = useState<string>("")
+
+
     // Open modal and set the current comment ID
     const openModal = () =>
         setIsOpen(true);
@@ -47,7 +50,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
         <div key={ogId} className="mb-4rounded">
             <div className=' bg-white p-5 flex rounded-lg  gap-4'>
                 <div className='bg-light-gray w-11 h-28 rounded-lg  flex flex-col gap-4 justify-center items-center'>
-                    <div>
+                    <div className='cursor-pointer	'>
                         <img width={20} height={20}
                             src='./images/icon-plus.svg'
                             onClick={() => handleScoreChange(ogId,
@@ -65,7 +68,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         )}
                     </div>
 
-                    <div>
+                    <div className='cursor-pointer	'>
                         <img width={20} height={20}
                             onClick={() => handleScoreChange(
                                 ogId,
@@ -131,7 +134,9 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                         setReplyContent('');
                                     } else {
                                         setReplyingTo(ogId); // Use ogId to set the replying state
-                                        setReplyContent(`@${comment.user.username} `);
+                                        setReplyContent(`${comment.user.username} `);
+                                        setReplyTo(`${comment.user.username} `);
+
                                     }
                                 }}>
                                     <div className='py-4'>
@@ -194,7 +199,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     <textarea
                         value={replyContent}
                         onChange={(e) => setReplyContent(e.target.value)}
-                        className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+                        className="w-full px-4 py-3 border rounded-lg  text-dark-blue shadow-sm focus:outline-none focus:border-moderate-blue"
                         rows={3}
                     />
                     <button
@@ -202,10 +207,12 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             handleReplySubmit(
                                 parentId,
                                 replyContent,
+                                replyto,
                                 comments,
                                 setComments,
                                 setReplyContent,
                                 setReplyingTo
+
                             )
                         }
                         className="mt-2 px-4 py-2 h-[46px] w-[120px] bg-moderate-blue text-white rounded-lg hover:bg-light-grayish-blue"

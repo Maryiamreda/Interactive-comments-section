@@ -1,4 +1,6 @@
-import { Reply, Comment } from '../types/commentTypes';
+import { Comment } from '../types/commentTypes';
+import { formatDistanceToNow } from 'date-fns';
+
 export const newComment = async (
     commentContent: string,
     comments: Comment[],
@@ -14,7 +16,7 @@ export const newComment = async (
         id: Date.now(), // Added back as it's required in your schema
 
         content: commentContent,
-        createdAt: new Date().toISOString(),
+        createdAt: formatDistanceToNow(new Date(), { addSuffix: true }), // Simple usage of date-fns
         score: 0,
         user: {
             username: 'juliusomo',

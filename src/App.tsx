@@ -58,7 +58,7 @@ const Comments = () => {
         <textarea
           value={commentContent}
           onChange={(e) => setCommentContent(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-3 border rounded-lg shadow-sm   text-dark-blue focus:outline-none focus:border-moderate-blue"
           rows={3}
           placeholder='Add a new comment...'
         />
