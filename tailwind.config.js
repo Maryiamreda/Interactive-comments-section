@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {
+      width: {
+        '16-important': '4rem !important', // 4rem is the equivalent of `w-16`
+      },
+      height: {
+        '28-important': '7rem !important', // 7rem is the equivalent of `h-28`
+      },
       colors: {
         // Primary colors
         'moderate-blue': 'hsl(238, 40%, 52%)',

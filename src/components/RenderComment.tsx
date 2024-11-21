@@ -42,13 +42,25 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     //gap-72 
     return (
         <div key={ogId} className="mb-4rounded">
-            <div className=' bg-white p-3  flex  gap-4'>
-                <div className='bg-light-gray w-5 '>
-                    <img src='./images/icon-plus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-3" />
-                    {'score' in comment && (
-                        <span className="text-sm ">{comment.score}</span>
-                    )}
-                    <img src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
+            <div className=' bg-white p-5 flex  gap-4'>
+                <div className='bg-light-gray w-16 h-28 rounded-lg  flex flex-col gap-4 justify-center items-center'>
+                    <div>
+                        <img width={20} height={20}
+                            src='./images/icon-plus.svg'
+                            className="text-moderate-blue hover:text-light-grayish-blue h-3"
+                            alt="Icon"
+                        />
+                    </div>
+                    <div className='text-moderate-blue'>
+                        {'score' in comment && (
+                            <span className="text-sm "><b>{comment.score}</b></span>
+                        )}
+                    </div>
+
+                    <div>
+                        <img width={20} height={20} src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
+
+                    </div>
                 </div>
                 <div>
 
@@ -57,7 +69,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
 
                         <div className='inline-flex gap-5'>
                             <div className=''>
-                                <img src={comment.user.image.png} width={40} className='h-9' />
+                                <img src={comment.user.image.png} width={40} className='h-9 ' />
                             </div>
                             <div className="font-semibold text-dark-blue ">{comment.user.username}</div>
                             <p className='text-grayish-blue '> {comment.createdAt}</p>
@@ -131,7 +143,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             rows={3}
                         />
 
-                        <button
+                        <button className="mt-2 px-4 py-2 h-[46px] w-[100px] bg-moderate-blue text-white rounded-lg hover:bg-light-grayish-blue"
+
                             onClick={() => {
                                 handleEdit(
                                     ogId,
@@ -144,9 +157,9 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                 setEdit(false);
                             }}
 
-                        >Update</button>
+                        ><b>Update</b></button>
                     </div>) :
-                        (<p className="mt-2 text-grayish-blue">
+                        (<p className=" text-grayish-blue  text-sm ">
                             {'replyingTo' in comment && (
                                 <span className="text-sm text-gray-500">@{comment.replyingTo}</span>
                             )} {comment.content}</p>)}

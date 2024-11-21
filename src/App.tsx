@@ -18,9 +18,9 @@ const Comments = () => {
   }, [comments, setComments]);
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-2xl mx-auto p-4 flex flex-col gap-6">
       {comments.map((comment) => (
-        <div key={comment._id}>
+        <div key={comment._id} className=' flex flex-col gap-6'>
           <RenderComment
             comment={comment}
             replyingTo={replyingTo}
@@ -33,7 +33,7 @@ const Comments = () => {
             setComments={setComments}
           />
           {comment.replies && comment.replies.length > 0 && (
-            <div className="ml-8 border-l-2 border-gray-200 pl-4">
+            <div className="ml-8 border-l-2 border-gray-200 pl-4 flex flex-col gap-6">
               {comment.replies.map((reply) => (
                 <RenderComment
                   // key={reply.id}
@@ -53,11 +53,12 @@ const Comments = () => {
         </div>
       ))}
 
-      <div className="mt-2">
+      <div className="mt-2  bg-white p-5 flex  gap-4 justify-between">
+        <img src='./images/avatars/image-juliusomo.png' width={40} className='h-9' />
         <textarea
           value={commentContent}
           onChange={(e) => setCommentContent(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500"
           rows={3}
           placeholder='Add a new comment...'
         />
@@ -73,9 +74,9 @@ const Comments = () => {
           }
 
           }
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="mt-2 px-4 py-2 h-[46px] w-[120px] bg-moderate-blue text-white rounded-lg hover:bg-light-grayish-blue"
         >
-          SEND
+          <b>SEND</b>
         </button>
       </div>
 
