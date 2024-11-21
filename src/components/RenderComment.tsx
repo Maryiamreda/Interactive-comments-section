@@ -3,6 +3,8 @@ import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from './commentActions';
 import styles from './RenderComment.module.css';
 import { handleDelete, handleEdit } from './deleteAndEdit';
+import axios from 'axios';
+import { handleScoreChange } from './score';
 interface RenderCommentProps {
     comment: Comment | Reply;
     parentId: string;
@@ -39,7 +41,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     const closeModal = () =>
         setIsOpen(false);
 
-    //gap-72 
+
+
     return (
         <div key={ogId} className="mb-4rounded">
             <div className=' bg-white p-5 flex rounded-lg  gap-4'>
@@ -47,6 +50,10 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     <div>
                         <img width={20} height={20}
                             src='./images/icon-plus.svg'
+                            onClick={() => handleScoreChange(ogId,
+                                comments,
+                                true,
+                                setComments,)}
                             className="text-moderate-blue hover:text-light-grayish-blue h-3"
                             alt="Icon"
                         />
@@ -58,7 +65,15 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     </div>
 
                     <div>
-                        <img width={20} height={20} src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
+                        <img width={20} height={20}
+                            onClick={() => handleScoreChange(
+                                ogId,
+                                comments,
+                                false,
+                                setComments,
+                            )}
+
+                            src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
 
                     </div>
                 </div>

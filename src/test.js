@@ -172,18 +172,28 @@ app.put('/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+app.patch('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { scoreChange } = req.body; // Get the score change (positive or negative)
 
+        const comment = await Comments.findById(id);
+        if (!comment) {
+            return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+        }
 
+        // If there's a scoreChange, apply it to the comment's score
+        if (scoreChange !== undefined) {
+            comment.score += scoreChange; // Modify score based on the scoreChange (increase or decrease)
+            await comment.save();
+            return res.status(200).json({ message: 'Score updated successfully' });
+        }
 
-
-
-
-
-
-
-
-
-
+        res.status(400).json({ message: 'Score change data is missing' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // Updated backend delete route
 app.delete('/:id', async (req, res) => {
