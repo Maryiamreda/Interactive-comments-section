@@ -53,6 +53,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             onClick={() => handleScoreChange(ogId,
                                 comments,
                                 true,
+                                parentId,
                                 setComments,)}
                             className="text-moderate-blue hover:text-light-grayish-blue h-3"
                             alt="Icon"
@@ -70,6 +71,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                 ogId,
                                 comments,
                                 false,
+                                parentId,
                                 setComments,
                             )}
 

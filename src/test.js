@@ -175,25 +175,47 @@ app.put('/:id', async (req, res) => {
 app.patch('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { scoreChange } = req.body; // Get the score change (positive or negative)
+        const { parentId } = req.query;
+        const { scoreChange } = req.body;
 
-        const comment = await Comments.findById(id);
-        if (!comment) {
-            return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+        if (scoreChange === undefined) {
+            return res.status(400).json({ message: 'Score change data is missing' });
         }
 
-        // If there's a scoreChange, apply it to the comment's score
-        if (scoreChange !== undefined) {
-            comment.score += scoreChange; // Modify score based on the scoreChange (increase or decrease)
+        // Check if the score change is for the main comment
+        if (!parentId || parentId === id) {
+            const comment = await Comments.findById(id);
+            if (!comment) {
+                return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+            }
+
+            comment.score += scoreChange; // Update score
             await comment.save();
-            return res.status(200).json({ message: 'Score updated successfully' });
+            return res.status(200).json({ message: 'Comment score updated successfully' });
         }
 
-        res.status(400).json({ message: 'Score change data is missing' });
+        // Update the reply score
+        const parentComment = await Comments.findById(parentId);
+        if (!parentComment) {
+            return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
+        }
+
+        // Look for the reply and update its score
+        parentComment.replies.forEach(reply => {
+            if (reply.id === parseInt(id)) {
+                reply.score += scoreChange; // Update score
+                return;
+            }
+        });
+
+        await parentComment.save();
+        res.status(200).json({ message: 'Reply score updated successfully' });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 // Updated backend delete route
 app.delete('/:id', async (req, res) => {
