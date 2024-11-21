@@ -181,7 +181,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     </div>) :
                         (<p className=" text-grayish-blue  text-sm ">
                             {'replyingTo' in comment && (
-                                <span className="text-sm text-gray-500">@{comment.replyingTo}</span>
+                                <span className="font-semibold text-moderate-blue">@{comment.replyingTo}</span>
                             )} {comment.content}</p>)}
 
 
