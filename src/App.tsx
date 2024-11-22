@@ -12,7 +12,8 @@ const Comments = () => {
   // Function to fetch comments initially and refresh them after updates
   const fetchComments = async () => {
     try {
-      const response = await fetch('http://localhost:3000/');
+      // Use the environment variable for the API URL
+      const response = await fetch(import.meta.env.VITE_API_URL + '/');
       const data = await response.json();
       setComments(data);
     } catch (error) {
@@ -26,9 +27,11 @@ const Comments = () => {
   }, []); // Run once when the component mounts
 
   // Function to fetch updated comments again when there's an update.
+
   const refreshComments = async () => {
     try {
-      const response = await fetch('http://localhost:3000/');
+      // Use the environment variable for the API URL
+      const response = await fetch(import.meta.env.VITE_API_URL + '/');
       const data = await response.json();
       setComments(data);
     } catch (error) {
