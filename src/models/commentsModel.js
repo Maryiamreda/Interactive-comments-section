@@ -7,12 +7,19 @@ const commentsSchema = mongoose.Schema(
         createdAt: { type: String, required: false },
         score: { type: Number, default: 0 },
         user: {
+            userId: { type: Number, required: true },
             image: {
                 png: { type: String, required: true },
                 webp: { type: String, required: true },
             },
             username: { type: String, required: true },
         },
+        userActions: [
+            {
+                userId: { type: Number, required: true },
+                action: { type: String, enum: ['like', 'dislike'], required: true }
+            }
+        ],
         replies: [
             {
                 id: { type: Number, required: true },

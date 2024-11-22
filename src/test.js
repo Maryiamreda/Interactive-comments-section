@@ -172,44 +172,56 @@ app.put('/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+//score system
+
+
+
+
+
+
+
+
 app.patch('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const { parentId } = req.query;
-        const { scoreChange } = req.body;
+        const { id } = req.params; // This is the custom `id` field
+        const { parentId } = req.query; // Parent ID for replies
+        const { content } = req.body;
 
-        if (scoreChange === undefined) {
-            return res.status(400).json({ message: 'Score change data is missing' });
+        if (!content) {
+            return res.status(400).json({ message: 'Content is required' });
         }
 
-        // Check if the score change is for the main comment
+        // Update main comment
         if (!parentId || parentId === id) {
-            const comment = await Comments.findById(id);
+            const comment = await Comments.findOneAndUpdate(
+                { id: id }, // Find by custom `id` field
+                { content }, // Update the content field
+                { new: true } // Return the updated document
+            );
+
             if (!comment) {
-                return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+                return res.status(404).json({ message: `Cannot find any comment with ID ${id}` });
             }
 
-            comment.score += scoreChange; // Update score
-            await comment.save();
-            return res.status(200).json({ message: 'Comment score updated successfully' });
+            return res.status(200).json({ message: 'Comment updated successfully', comment });
         }
 
-        // Update the reply score
-        const parentComment = await Comments.findById(parentId);
+        // Update reply
+        const parentComment = await Comments.findOne({ id: parentId }); // Find parent by custom `id`
         if (!parentComment) {
             return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
         }
 
-        // Look for the reply and update its score
-        parentComment.replies.forEach(reply => {
-            if (reply.id === parseInt(id)) {
-                reply.score += scoreChange; // Update score
-                return;
-            }
-        });
+        // Locate and update the reply
+        const reply = parentComment.replies.find(reply => reply.id === parseInt(id));
+        if (!reply) {
+            return res.status(404).json({ message: `Cannot find reply with ID ${id}` });
+        }
+
+        reply.content = content; // Update the content of the reply
 
         await parentComment.save();
-        res.status(200).json({ message: 'Reply score updated successfully' });
+        return res.status(200).json({ message: 'Reply updated successfully', reply });
 
     } catch (error) {
         res.status(500).json({ message: error.message });

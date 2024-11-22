@@ -53,10 +53,12 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     <div className='cursor-pointer	'>
                         <img width={20} height={20}
                             src='./images/icon-plus.svg'
-                            onClick={() => handleScoreChange(ogId,
+                            onClick={() => handleScoreChange(
+                                ogId,
                                 comments,
-                                true,
+                                true, // For increment
                                 parentId,
+                                comment.user.userId,
                                 setComments,)}
                             className="text-moderate-blue hover:text-light-grayish-blue h-3"
                             alt="Icon"
@@ -73,10 +75,10 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             onClick={() => handleScoreChange(
                                 ogId,
                                 comments,
-                                false,
+                                false, // For increment
                                 parentId,
-                                setComments,
-                            )}
+                                comment.user.userId,
+                                setComments,)}
 
                             src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
 

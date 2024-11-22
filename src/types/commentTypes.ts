@@ -1,6 +1,7 @@
 // types/commentTypes.ts
 
 export interface User {
+    userId: number,
     username: string;
     image: {
         webp: string;

@@ -19,6 +19,7 @@ export const newComment = async (
         createdAt: formatDistanceToNow(new Date(), { addSuffix: true }), // Simple usage of date-fns
         score: 0,
         user: {
+            userId: '202',
             username: 'juliusomo',
             image: {
                 webp: './images/avatars/image-juliusomo.webp',
