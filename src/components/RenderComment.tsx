@@ -55,7 +55,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
             <div className=' bg-white p-5 flex rounded-lg  gap-4'>
                 <div className='bg-light-gray w-11 h-28 rounded-lg  flex flex-col gap-4 justify-center items-center'>
                     <div className='cursor-pointer	'>
-                        <img width={20} height={20}
+                        <img width={10} height={10}
                             src='./images/icon-plus.svg'
                             onClick={() => handleScoreChange(
                                 ogId,
@@ -75,7 +75,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                     </div>
 
                     <div className='cursor-pointer	'>
-                        <img width={20} height={20}
+                        <img width={10} height={10}
                             onClick={() => handleScoreChange(
                                 ogId,
                                 comments,

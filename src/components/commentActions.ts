@@ -32,6 +32,9 @@ export const handleReplySubmit = async (
                 png: './images/avatars/image-juliusomo.png',
             },
         },
+        commentActions: {
+            action: "dislike"
+        },
     };
 
     try {

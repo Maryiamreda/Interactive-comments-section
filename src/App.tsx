@@ -53,7 +53,7 @@ const Comments = () => {
             refreshComments={refreshComments}
           />
           {comment.replies && comment.replies.length > 0 && (
-            <div className="ml-8 border-l-2 border-gray-200 pl-4 flex flex-col gap-6">
+            <div className="ml-8 border-l-2 border-gray-200 pl-10 flex flex-col gap-6">
               {comment.replies.map((reply) => (
                 <RenderComment
                   key={reply.id} // Don't forget to add a key here

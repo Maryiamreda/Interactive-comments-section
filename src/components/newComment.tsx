@@ -26,6 +26,9 @@ export const newComment = async (
                 png: './images/avatars/image-juliusomo.png',
             },
         },
+        commentActions: {
+            action: "dislike"
+        },
         replies: []
     };
 
