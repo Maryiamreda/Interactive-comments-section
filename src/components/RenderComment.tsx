@@ -3,7 +3,6 @@ import { Comment, Reply } from '../types/commentTypes';
 import { handleReplySubmit } from './commentActions';
 import styles from './RenderComment.module.css';
 import { handleDelete, handleEdit } from './deleteAndEdit';
-import axios from 'axios';
 import { handleScoreChange } from './score';
 
 interface RenderCommentProps {
@@ -59,7 +58,6 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                             src='./images/icon-plus.svg'
                             onClick={() => handleScoreChange(
                                 ogId,
-                                comments,
                                 true, // For increment
                                 parentId,
                                 setComments,
@@ -78,7 +76,6 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                         <img width={10} height={10}
                             onClick={() => handleScoreChange(
                                 ogId,
-                                comments,
                                 false, // For increment
                                 parentId,
 

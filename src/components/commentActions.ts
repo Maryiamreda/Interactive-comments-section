@@ -25,6 +25,7 @@ export const handleReplySubmit = async (
         content: replyContent.replace(`@${comment.user.username} `, ''), // Removes username mention
         replyingTo: replyto,
         createdAt: new Date().toISOString(),
+        // @ts-ignore
         user: {
             username: 'juliusomo',
             image: {

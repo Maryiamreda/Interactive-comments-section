@@ -3,7 +3,6 @@ import { Comment } from "../types/commentTypes";
 
 export const handleScoreChange = async (
     commentId: string,
-    comments: Comment[],
     increase: boolean,
     parentId: string | null,
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
