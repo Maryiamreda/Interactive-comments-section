@@ -128,14 +128,6 @@ app.post('/comments/:commentId/reply', async (req, res) => {
 // });
 
 
-
-
-
-
-
-
-
-
 app.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -176,59 +168,6 @@ app.put('/:id', async (req, res) => {
 
 
 
-
-
-
-
-
-app.patch('/:id', async (req, res) => {
-    try {
-        const { id } = req.params; // This is the custom `id` field
-        const { parentId } = req.query; // Parent ID for replies
-        const { content } = req.body;
-
-        if (!content) {
-            return res.status(400).json({ message: 'Content is required' });
-        }
-
-        // Update main comment
-        if (!parentId || parentId === id) {
-            const comment = await Comments.findOneAndUpdate(
-                { id: id }, // Find by custom `id` field
-                { content }, // Update the content field
-                { new: true } // Return the updated document
-            );
-
-            if (!comment) {
-                return res.status(404).json({ message: `Cannot find any comment with ID ${id}` });
-            }
-
-            return res.status(200).json({ message: 'Comment updated successfully', comment });
-        }
-
-        // Update reply
-        const parentComment = await Comments.findOne({ id: parentId }); // Find parent by custom `id`
-        if (!parentComment) {
-            return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
-        }
-
-        // Locate and update the reply
-        const reply = parentComment.replies.find(reply => reply.id === parseInt(id));
-        if (!reply) {
-            return res.status(404).json({ message: `Cannot find reply with ID ${id}` });
-        }
-
-        reply.content = content; // Update the content of the reply
-
-        await parentComment.save();
-        return res.status(200).json({ message: 'Reply updated successfully', reply });
-
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-
 // Updated backend delete route
 app.delete('/:id', async (req, res) => {
     try {
@@ -263,19 +202,72 @@ app.delete('/:id', async (req, res) => {
     }
 });
 
-// app.delete('/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const comment = await Comments.findByIdAndDelete(id);
-//         if (!comment) {
-//             return res.status(404).json({ message: `cannot find any comment with ID ${id}` });
-//         }
-//         res.status(200).json(comment);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
 
+app.patch('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { parentId } = req.query;
+        const { scoreChange, action } = req.body; // Assuming `userId` and `action` (like/dislike) are passed
+        console.log(action)
+        if (scoreChange === undefined) {
+            return res.status(400).json({ message: 'Score change data is missing' });
+        }
+
+        if (!['like', 'dislike'].includes(action)) {
+            return res.status(400).json({ message: 'Invalid action type' });
+        }
+
+        let commentToUpdate;
+
+        // Check if the score change is for the main comment
+        if (!parentId || parentId === id) {
+            const comment = await Comments.findById(id);
+            if (!comment) {
+                return res.status(404).json({ message: `Cannot find comment with ID ${id}` });
+            }
+            console.log(comment.commentActions.action)
+            if (comment.commentActions.action === action) {
+
+                return res.status(400).json({ message: `You have already ${action}d this comment.` });
+            }
+
+            // Perform the action (increase or decrease score)
+            comment.commentActions.action = action; // Store the action as a string, not an array
+
+            comment.score += scoreChange;
+            await comment.save();
+
+            commentToUpdate = comment;
+            return res.status(200).json({ message: `${action}d comment successfully` });
+        }
+
+        // Update the reply score
+        const parentComment = await Comments.findById(parentId);
+        if (!parentComment) {
+            return res.status(404).json({ message: `Cannot find parent comment with ID ${parentId}` });
+        }
+
+        // Look for the reply and update its score
+        const reply = parentComment.replies.find(reply => reply.id === parseInt(id));
+        if (!reply) {
+            return res.status(404).json({ message: `Cannot find reply with ID ${id}` });
+        }
+
+        if (reply.commentActions.action === action) {
+            return res.status(400).json({ message: `You have already ${action}d this reply.` });
+        }
+        reply.commentActions.action = action; // Store the action as a string, not an array
+        reply.score += scoreChange; // Update score
+
+        await parentComment.save();
+        commentToUpdate = parentComment;
+
+        res.status(200).json({ message: `${action}d reply successfully` });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 export default app;

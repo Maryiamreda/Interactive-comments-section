@@ -6,8 +6,9 @@ export const handleScoreChange = async (
     comments: Comment[],
     increase: boolean,
     parentId: string | null,
-    userId: number,
-    setComments: React.Dispatch<React.SetStateAction<Comment[]>>
+    setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
+    refreshComments: () => Promise<void> // Add the refreshComments function as a parameter
+
 ) => {
     try {
         const updatedScore = increase ? 1 : -1;
@@ -15,7 +16,7 @@ export const handleScoreChange = async (
 
         const response = await axios.patch(
             `http://localhost:3000/${commentId}${parentId ? `?parentId=${parentId}` : ""}`,
-            { scoreChange: updatedScore, userId, action }
+            { scoreChange: updatedScore, action }
         );
 
         if (response.status === 200) {
@@ -36,6 +37,8 @@ export const handleScoreChange = async (
                     return comment;
                 })
             );
+            await refreshComments();
+
         }
     } catch (error) {
         console.error("Error updating score:", error);

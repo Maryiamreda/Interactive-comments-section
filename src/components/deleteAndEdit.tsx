@@ -6,7 +6,9 @@ export const handleDelete = async (
     commentId: string,
     comments: Comment[],
     parentId: string | null,
-    setComments: React.Dispatch<React.SetStateAction<Comment[]>>
+    setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
+    refreshComments: () => Promise<void> // Add the refreshComments function as a parameter
+
 ) => {
     try {
         // Convert reply ID to string if it's a number
@@ -34,6 +36,8 @@ export const handleDelete = async (
                 // Handling main comment deletion
                 setComments(comments.filter(comment => comment._id !== commentId));
             }
+            await refreshComments();
+
         }
     } catch (error) {
         console.error('Error deleting comment:', error);
@@ -46,7 +50,8 @@ export const handleEdit = async (
     comments: Comment[],
     content: string,
     parentId: string | null,
-    setComments: React.Dispatch<React.SetStateAction<Comment[]>>
+    setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
+    refreshComments: () => Promise<void> // Add the refreshComments function as a parameter
 ) => {
     try {
         // Convert reply ID to string if it's a number
@@ -81,6 +86,7 @@ export const handleEdit = async (
                         : comment
                 ));
             }
+            await refreshComments();
         }
     } catch (error) {
         console.error('Error editing comment:', error);

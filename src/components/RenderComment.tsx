@@ -5,6 +5,7 @@ import styles from './RenderComment.module.css';
 import { handleDelete, handleEdit } from './deleteAndEdit';
 import axios from 'axios';
 import { handleScoreChange } from './score';
+
 interface RenderCommentProps {
     comment: Comment | Reply;
     parentId: string;
@@ -15,6 +16,8 @@ interface RenderCommentProps {
     setReplyingTo: React.Dispatch<React.SetStateAction<string | null>>;
     setReplyContent: React.Dispatch<React.SetStateAction<string>>;
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+    refreshComments: () => Promise<void>; // Add this line to the interface
+
 }
 
 const RenderComment: React.FC<RenderCommentProps> = ({
@@ -27,6 +30,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setReplyingTo,
     setReplyContent,
     setComments,
+    refreshComments,
 }) => {
     const isReplying = replyingTo === ogId; // Match with ogId to ensure textarea placement under the correct comment
     const [isOpen, setIsOpen] = useState(false);
@@ -58,8 +62,8 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                 comments,
                                 true, // For increment
                                 parentId,
-                                comment.user.userId,
-                                setComments,)}
+                                setComments,
+                                refreshComments,)}
                             className="text-moderate-blue hover:text-light-grayish-blue h-3"
                             alt="Icon"
                         />
@@ -77,8 +81,9 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                 comments,
                                 false, // For increment
                                 parentId,
-                                comment.user.userId,
-                                setComments,)}
+
+                                setComments,
+                                refreshComments,)}
 
                             src='./images/icon-minus.svg' className="text-moderate-blue hover:text-light-grayish-blue h-1" />
 
@@ -174,6 +179,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                     editContent,
                                     parentId,
                                     setComments,
+                                    refreshComments,
 
                                 ); // Pass comments and setComments
                                 setEdit(false);
@@ -254,7 +260,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                                         comments,
                                         parentId,
                                         setComments,
-
+                                        refreshComments,
                                     ); // Pass comments and setComments
                                     closeModal();
                                 }}
